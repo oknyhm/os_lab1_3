@@ -1,0 +1,14 @@
+=== MANUAL LOAD/UNLOAD TEST ===
+/lib/modules/6.12.110-oslab3-xxx/extra/oslab3_probe.ko
+student=XXX
+kernel=6.12.110-oslab3-xxx
+module_load_boottime_ms=3096361
+current_boottime_ms=3114759
+status=ready
+PASS unload: proc entry removed
+PASS reload: proc entry restored
+9月 21 20:23:44 yangs8847 kernel: oslab3_probe: loading out-of-tree module taints kernel.
+9月 21 20:23:44 yangs8847 kernel: oslab3_probe: module verification failed: signature and/or required key missing - tainting kernel
+9月 21 20:23:44 yangs8847 kernel: oslab3_probe: init at 3096361 ms on kernel 6.12.110-oslab3-xxx
+9月 21 20:24:03 yangs8847 kernel: oslab3_probe: exit
+9月 21 20:24:03 yangs8847 kernel: oslab3_probe: init at 3114836 ms on kernel 6.12.110-oslab3-xxx

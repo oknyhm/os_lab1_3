@@ -1,0 +1,15 @@
+* text=auto
+*.md text eol=lf
+*.tex text eol=lf
+*.sh text eol=lf
+*.c text eol=lf
+*.conf text eol=lf
+Makefile text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+# Preserve historical evidence byte-for-byte.
+report/logs/** -text
+report/figures/** -text
+*.png binary
+*.pdf binary
+docs/evidence-sha256.txt text eol=lf

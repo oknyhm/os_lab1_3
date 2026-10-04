@@ -1,0 +1,29 @@
+Linux 6.12.110 x86_64 startup source index
+233:_start:
+133:void main(void)
+103:void go_to_protected_mode(void)
+83:SYM_FUNC_START(startup_32)
+38:SYM_CODE_START_NOALIGN(startup_64)
+869:void start_kernel(void)
+1426:static int __ref kernel_init(void *unused)
+217:PHONY += $(MAKECMDGOALS) __sub-make
+341:PHONY += $(MAKECMDGOALS) __build_one_by_one
+560:KBUILD_CFLAGS :=
+561:KBUILD_CFLAGS += -std=gnu11
+562:KBUILD_CFLAGS += -fshort-wchar
+563:KBUILD_CFLAGS += -funsigned-char
+564:KBUILD_CFLAGS += -fno-common
+565:KBUILD_CFLAGS += -fno-PIE
+566:KBUILD_CFLAGS += -fno-strict-aliasing
+579:KBUILD_CFLAGS_KERNEL :=
+582:KBUILD_CFLAGS_MODULE  := -DMODULE
+628:PHONY += scripts_basic
+632:PHONY += outputmakefile
+705:PHONY += all
+754:all: vmlinux
+802:PHONY += include/config/auto.conf
+816:KBUILD_CFLAGS	+= -fno-delete-null-pointer-checks
+819:KBUILD_CFLAGS += -O2
+822:KBUILD_CFLAGS += -Os
+835:KBUILD_CFLAGS	+= $(call cc-option,--param=allow-store-data-races=0)
+286:libs-y  += arch/x86/lib/

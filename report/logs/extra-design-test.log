@@ -1,0 +1,18 @@
+PASS T01-kernel                   6.12.110-oslab3-xxx
+PASS T02-module-loaded            oslab3_probe 12288 0
+PASS T03-proc-readable            /proc/oslab3_boot
+PASS T04-proc-status              ready
+PASS T05-boot-autoload            loaded_at=6557ms
+PASS T06-kernel-log               init record found in current boot
+PASS T07-system-state             running
+PASS T08-ssh                      active
+PASS T09-failed-units             0
+
+/proc/oslab3_boot
+student=XXX
+kernel=6.12.110-oslab3-xxx
+module_load_boottime_ms=6557
+current_boottime_ms=57612
+status=ready
+
+SUMMARY tests=9 failures=0 result=PASS

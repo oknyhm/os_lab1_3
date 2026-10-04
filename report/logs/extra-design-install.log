@@ -1,0 +1,14 @@
+make -C /lib/modules/6.12.110-oslab3-xxx/build M=/home/yang/oslab3/extra-design modules
+make[1]: Entering directory '/home/yang/oslab3/src/linux-6.12.110'
+  CC [M]  /home/yang/oslab3/extra-design/oslab3_probe.o
+  MODPOST /home/yang/oslab3/extra-design/Module.symvers
+  CC [M]  /home/yang/oslab3/extra-design/oslab3_probe.mod.o
+  CC [M]  /home/yang/oslab3/extra-design/.module-common.o
+  LD [M]  /home/yang/oslab3/extra-design/oslab3_probe.ko
+make[1]: Leaving directory '/home/yang/oslab3/src/linux-6.12.110'
+Installed module: /lib/modules/6.12.110-oslab3-xxx/extra/oslab3_probe.ko
+student=XXX
+kernel=6.12.110-oslab3-xxx
+module_load_boottime_ms=3096361
+current_boottime_ms=3096378
+status=ready

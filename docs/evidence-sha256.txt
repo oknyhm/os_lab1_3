@@ -1,0 +1,28 @@
+# Evidence integrity manifest prepared 2026-10-05.
+# Covers original logs, original screenshots/SVG, and the revised report PDF.
+# Historical run date: 2026-09-21; this is not a new runtime test or signature.
+# Paths are relative to the repository root; on Linux: sha256sum -c docs/evidence-sha256.txt
+09407e98f9746374c0d2bd28221490e50671398fe2374d9bff359466733127ec  output/pdf/实验三_Linux启动初始化过程探析_XXX.pdf
+5b2f30624bb4a444d5ae2c2d0558baa0f175ea83d84bf464804f8262711eec3d  report/figures/boot-analysis.svg
+82b9ba5cc1e0fe1a4fd307e3d96ee0b459f9982e7517e26667f7ba39758df2c1  report/figures/boot-verify.png
+11735c2153fffbf5bf98fe1f0a2307d3c0b89795723dab531436a2d9f18cd6b4  report/figures/build-result.png
+053ebbc815cf689e0a56d81eb57ddc72feeb036ffed890ae878d446e44afef4b  report/figures/env-baseline.png
+94ceefb5592a2c2038605e4eb52f990dbe3a21c320d166d0d67eb9804272601b  report/figures/extra-design-test.png
+ec4453f0e1e910b1662bcdca7fc2cba3ddd6b27496fdaa01b552059fab674cf3  report/figures/kernel-config.png
+14e206b9ad20cd00184fa94090b4d238d5a2e0f6a811d89a78a5f7d147b1e9c8  report/figures/source-analysis.png
+3e6c0fa25ab343dad089838b8aa75aaf44d2d172e451dc1261ccdbc6ed66180b  report/logs/boot-performance.txt
+92eb5d03d18c97ee293d55d65fd12e8169df728954d8a16df9820a982542e1bd  report/logs/boot-verification.txt
+ed65e4f4ec0f0c7605eb2290d7538a87d2199aa325ec9f8ab3378d4c9a07c497  report/logs/build.log
+52a48099b01f8bbdb92a9bc78932e45dbff0f23c8a4e6e39545276bc0b919995  report/logs/build.status
+be5abff02df7ccb1bbd786ec4cf1d4e36edd745b4306eb1f0cb03f1c122d6d67  report/logs/build-attempt1.log
+22c020a0c9cbd1b4461df4810ae3766f38e404b2cc3bcbc3b1a0d49eb49a247a  report/logs/build-time.txt
+0877b4ee320225fc6e2bfa1e542ea49f4817ec91700a5572ccac03803057ad1c  report/logs/configuration.log
+36098084c5b2dfe16f2ef5e6baadfd71487232c7ba300aa757e0623ce1956b30  report/logs/environment.txt
+a00495ae326bd7cce61644cbd5e4ed73311327c06a0b6e30909fcc084c3a1bde  report/logs/extra-design-install.log
+5a9a9aa9159e20e126ea825042c4a4494ee63488c6982e1ca3aa0cc594e0c377  report/logs/extra-design-manual-test.log
+c15ba3077747c687a77cdbeeae5d710d08243ed24525883131494852f6471b68  report/logs/extra-design-test.log
+f6d89fc82b4774eedf9e775e7f5d10b56cef8a46d02fe9ce9986a66af2d04031  report/logs/fstab-backup.txt
+a08f25d4076894e8efe9c0f17bb93204bbebb4d8f0e92ad39df3e45fd98bfad2  report/logs/install.log
+774be4110f576c17504bb0741dad638dff25c68fecde2628e4edc2b084ca63b1  report/logs/kernel-config-6.12.110-oslab3-xxx
+ccbc5c1d5e89c73fc113f3e76c1b5f4b96888f7d4bf5ee7b1696be3198f1332d  report/logs/linux-6.12.110.sha256
+5bf6687d26e554afc2eae08ef1777a3165d3a0937ed7a8c319ff10772c07613b  report/logs/source-index.txt

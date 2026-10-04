@@ -1,0 +1,2 @@
+backup=/etc/fstab.oslab3-before-libvirt-fix-20260921-193121.bak
+77e8f7fdfb18b14275ccbc4b3ca81cd6c99940ffa4eeabca8f3caab0eb0e7792  /etc/fstab.oslab3-before-libvirt-fix-20260921-193121.bak

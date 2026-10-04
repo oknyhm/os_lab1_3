@@ -1,0 +1,41 @@
+XXX | 操作系统实验三：自编译内核启动验证
+captured=2026-09-21 19:33:22 CST
+user=yang
+hostname=yangs8847
+kernel=6.12.110-oslab3-xxx
+architecture=x86_64
+cmdline=BOOT_IMAGE=/vmlinuz-6.12.110-oslab3-xxx root=UUID=dbba4c74-895f-4d08-bfc8-db27853bbb91 ro rootflags=subvol=@ quiet splash
+pid1=systemd
+system_state=running
+ssh_state=active
+rootfs=/dev/sda2[/@] btrfs  rw,noatime,compress=lzo,discard,space_cache=v2,autodefrag,subvolid=256,subvol=/@
+ipv4=192.168.81.128
+target_modules=present
+target_image=present
+fallback_image=present
+
+kernel_log_head:
+[    0.000000] yangs8847 kernel: Linux version 6.12.110-oslab3-xxx (yang@yangs8847) (gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #2 SMP PREEMPT_DYNAMIC Mon Sep 21 17:41:33 CST 2026
+[    0.000000] yangs8847 kernel: Command line: BOOT_IMAGE=/vmlinuz-6.12.110-oslab3-xxx root=UUID=dbba4c74-895f-4d08-bfc8-db27853bbb91 ro rootflags=subvol=@ quiet splash
+[    0.000000] yangs8847 kernel: KERNEL supported cpus:
+[    0.000000] yangs8847 kernel:   Intel GenuineIntel
+[    0.000000] yangs8847 kernel:   AMD AuthenticAMD
+[    0.000000] yangs8847 kernel:   Hygon HygonGenuine
+[    0.000000] yangs8847 kernel:   Centaur CentaurHauls
+[    0.000000] yangs8847 kernel:   zhaoxin   Shanghai  
+[    0.000000] yangs8847 kernel: BIOS-provided physical RAM map:
+[    0.000000] yangs8847 kernel: BIOS-e820: [mem 0x0000000000000000-0x000000000009e7ff] usable
+[    0.000000] yangs8847 kernel: BIOS-e820: [mem 0x000000000009e800-0x000000000009ffff] reserved
+[    0.000000] yangs8847 kernel: BIOS-e820: [mem 0x00000000000dc000-0x00000000000fffff] reserved
+[    0.000000] yangs8847 kernel: BIOS-e820: [mem 0x0000000000100000-0x00000000bfecffff] usable
+[    0.000000] yangs8847 kernel: BIOS-e820: [mem 0x00000000bfed0000-0x00000000bfefefff] ACPI data
+[    0.000000] yangs8847 kernel: BIOS-e820: [mem 0x00000000bfeff000-0x00000000bfefffff] ACPI NVS
+[    0.000000] yangs8847 kernel: BIOS-e820: [mem 0x00000000bff00000-0x00000000bfffffff] usable
+[    0.000000] yangs8847 kernel: BIOS-e820: [mem 0x00000000f0000000-0x00000000f7ffffff] reserved
+[    0.000000] yangs8847 kernel: BIOS-e820: [mem 0x00000000fec00000-0x00000000fec0ffff] reserved
+[    0.000000] yangs8847 kernel: BIOS-e820: [mem 0x00000000fee00000-0x00000000fee00fff] reserved
+[    0.000000] yangs8847 kernel: BIOS-e820: [mem 0x00000000fffe0000-0x00000000ffffffff] reserved
+
+kernel_errors:
+9月 21 19:32:16 yangs8847 kernel: piix4_smbus 0000:00:07.3: SMBus Host Controller not enabled!
+verification_exit=0

@@ -1,0 +1,40 @@
+OS lab 3 boot performance evidence
+collected_at=2026-09-21T20:25:30+08:00
+kernel=6.12.110-oslab3-xxx
+
+Startup finished in 5.890s (kernel) + 7.305s (userspace) = 13.196s 
+graphical.target reached after 7.212s in userspace.
+
+Top services by activation time:
+3.007s snapd.seeded.service
+2.942s snapd.service
+2.657s systemd-udev-settle.service
+2.147s NetworkManager.service
+1.598s kfocus-focusrx-system.service
+1.354s apport.service
+1.283s dev-sda2.device
+1.053s snapd.apparmor.service
+1.005s systemd-resolved.service
+ 954ms accounts-daemon.service
+ 954ms rsyslog.service
+ 903ms grub-common.service
+ 901ms systemd-binfmt.service
+ 885ms systemd-timesyncd.service
+ 884ms loadcpufreq.service
+
+Critical chain:
+The time when unit became active or started is printed after the "@" character.
+The time the unit took to start is printed after the "+" character.
+
+graphical.target @7.212s
+└─multi-user.target @7.211s
+  └─snapd.seeded.service @4.202s +3.007s
+    └─basic.target @4.009s
+      └─sockets.target @4.008s
+        └─snapd.socket @3.996s +12ms
+          └─sysinit.target @3.986s
+            └─systemd-udev-settle.service @1.298s +2.657s
+              └─systemd-udev-trigger.service @522ms +761ms
+                └─systemd-udevd-kernel.socket @337ms
+                  └─system.slice @316ms
+                    └─-.slice @316ms
