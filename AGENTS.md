@@ -1,6 +1,6 @@
 # Scope
 
-This repository contains OS experiment 3, Linux boot initialization analysis, despite its requested name `os_lab1_3`. Work only on this experiment unless the user expands the scope. Preserve `XXX` in personal-information fields until the user supplies replacements.
+This repository contains OS experiment 3, Linux boot initialization analysis, despite its requested name `os_lab1_3`. Work only on this experiment unless the user expands the scope. The user supplied cover identity: 毛灏洋, student ID 24281070. Omit school, college, class and supervisor fields from the cover. Preserve historical XXX markers in screenshots, logs and kernel versions.
 
 # Evidence is part of the deliverable
 

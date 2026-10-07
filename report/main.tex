@@ -53,7 +53,7 @@
   urlcolor=oscyan,
   citecolor=osblue,
   pdftitle={Linux 启动初始化过程探析},
-  pdfauthor={XXX}
+  pdfauthor={毛灏洋}
 }
 
 \pagestyle{fancy}
@@ -125,8 +125,6 @@
 \begin{titlepage}
   \centering
   \vspace*{1.5cm}
-  {\Large 北京交通大学计算机学院\par}
-  \vspace{1.2cm}
   {\color{osblue}\rule{0.9\textwidth}{1.2pt}\par}
   \vspace{1.1cm}
   {\Huge\bfseries 操作系统实验报告\par}
@@ -137,15 +135,15 @@
   \vfill
   \renewcommand{\arraystretch}{1.7}
   \begin{tabular}{>{\bfseries}r l}
-    姓名：& XXX \\
-    学号：& XXX \\
-    班级：& XXX \\
-    指导教师：& XXX \\
+    姓名：& 毛灏洋 \\
+    学号：& 24281070 \\
     实验平台：& VMware Workstation + Kubuntu 24.04.3 LTS \\
     实验日期：& 2026 年 9 月 21 日 \\
   \end{tabular}
   \vfill
-  {\large 个人信息暂以 XXX 占位\par}
+  {\large 公开仓库\par}
+  \vspace{0.3cm}
+  \url{https://github.com/oknyhm/os_lab1_3}
 \end{titlepage}
 
 \chapter*{摘要}
@@ -159,7 +157,7 @@
 实验过程保留源码定位、配置、编译、安装与启动证据，形成可复现的命令和日志链。
 额外实现一个可加载的内核探针，通过 procfs 与内核日志观察模块初始化，并在实际重启后完成九项检查。
 基础运行数据采集于 2026 年 9 月 21 日；10 月 5 日首次发布，10 月 7 日补充文档和交互证据，
-并在虚拟机内完成九项复验与六项补充检查，均通过。个人字段保留 XXX，现附带个人标题的真实对话截图。
+并在虚拟机内完成九项复验与六项补充检查，均通过，附带个人标题的真实对话截图。
 
 \textbf{关键词：} Linux 内核；x86\_64；启动初始化；start\_kernel；GRUB；内核编译
 
@@ -690,7 +688,7 @@ Windows 侧 Agent 通过免密 SSH 在实验虚拟机中执行可复现命令，
 \path{ai-record/interaction-summary.md} 是事后摘要，均非完整平台导出。
 
 执行图中的 EXT4 描述是 Agent 口误，实际根文件系统以日志中的 Btrfs 为准；
-完成图中的 23 页对应当时版本，不是后续修订版。截图标题已有个人标记，正文个人字段仍保留 XXX。
+完成图中的 23 页对应当时版本，不是后续修订版。封面已填写姓名与学号；历史截图、日志及内核版本中的 XXX 标识按原样保留。
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.96\textwidth]{../ai-record/完成.png}
