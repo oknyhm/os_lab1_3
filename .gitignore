@@ -37,6 +37,7 @@
 !/report/figures/boot-verify.png
 !/report/figures/extra-design-test.png
 !/report/figures/boot-analysis.svg
+!/report/figures/supplemental-test-20261007.png
 
 /output/*
 !/output/pdf/

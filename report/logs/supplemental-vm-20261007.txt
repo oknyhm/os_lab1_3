@@ -1,0 +1,100 @@
+XXX | OS lab 3 supplemental VM verification
+collected_at=2026-10-07T18:18:03+08:00
+
+COMMAND: id
+uid=1000(yang) gid=1000(yang) groups=1000(yang),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),114(lpadmin),988(sambashare)
+command_exit=0
+
+COMMAND: uname -r
+6.12.110-oslab3-xxx
+command_exit=0
+
+COMMAND: cat /proc/sys/kernel/random/boot_id
+be9c2642-9f41-488d-b332-7abd572119e1
+command_exit=0
+
+COMMAND: uptime -s
+2026-10-07 18:07:10
+command_exit=0
+
+COMMAND: findmnt -n -o SOURCE\,FSTYPE\,OPTIONS /
+/dev/sda2[/@] btrfs  rw,noatime,compress=lzo,discard,space_cache=v2,autodefrag,subvolid=256,subvol=/@
+command_exit=0
+
+COMMAND: sha256sum /tmp/oslab3-retest.wKj1Oy/test_boot_probe.sh /tmp/oslab3-retest.wKj1Oy/check_probe_contract.py
+66ccb500aca3be29ed7a126548424f17f4e6535f6b1c7f10453d609868c7cc84  /tmp/oslab3-retest.wKj1Oy/test_boot_probe.sh
+b898bc33acf28667e4f5ceba4f21d1070e2ba00ca2363ed39b47f69fe849d14d  /tmp/oslab3-retest.wKj1Oy/check_probe_contract.py
+command_exit=0
+
+COMMAND: bash /tmp/oslab3-retest.wKj1Oy/test_boot_probe.sh
+PASS T01-kernel                   6.12.110-oslab3-xxx
+PASS T02-module-loaded            oslab3_probe 12288 0
+PASS T03-proc-readable            /proc/oslab3_boot
+PASS T04-proc-status              ready
+PASS T05-boot-autoload            loaded_at=6370ms
+PASS T06-kernel-log               init record found in current boot
+PASS T07-system-state             running
+PASS T08-ssh                      active
+PASS T09-failed-units             0
+
+/proc/oslab3_boot
+student=XXX
+kernel=6.12.110-oslab3-xxx
+module_load_boottime_ms=6370
+current_boottime_ms=653221
+status=ready
+
+SUMMARY tests=9 failures=0 result=PASS
+command_exit=0
+
+COMMAND: python3 /tmp/oslab3-retest.wKj1Oy/check_probe_contract.py
+collected_at=2026-10-07T10:18:03.412204+00:00
+mode=live; checks do not prove automatic loading
+host=yangs8847
+kernel=6.12.110-oslab3-xxx
+boot_id=be9c2642-9f41-488d-b332-7abd572119e1
+sample_1:
+student=XXX
+kernel=6.12.110-oslab3-xxx
+module_load_boottime_ms=6370
+current_boottime_ms=653292
+status=ready
+sample_2:
+student=XXX
+kernel=6.12.110-oslab3-xxx
+module_load_boottime_ms=6370
+current_boottime_ms=653343
+status=ready
+
+PASS E01-fields: required fields and numeric timestamps present
+PASS E02-kernel-status: proc kernel matches uname; status=ready
+PASS E03-time-contract: load stable; current time increases and follows load
+PASS E04-mode: mode=444; expected=444
+PASS E05-write-open: write-open rejected: errno=13; uid=1000
+PASS E06-failed-units: returncode=0; stdout=''; stderr=''
+SUMMARY checks=6 failures=0
+command_exit=0
+
+COMMAND: cat /etc/modules-load.d/oslab3_probe.conf
+# Load the OS lab 3 boot probe during systemd-modules-load.service.
+oslab3_probe
+
+command_exit=0
+
+COMMAND: systemctl show systemd-modules-load.service -p Result -p ExecMainStatus -p ActiveEnterTimestampMonotonic
+Result=success
+ExecMainStatus=0
+ActiveEnterTimestampMonotonic=6371282
+command_exit=0
+
+COMMAND: journalctl -b -u systemd-modules-load.service --no-pager -o short-monotonic
+-- No entries --
+command_exit=0
+
+COMMAND: journalctl -b -k --no-pager -o short-monotonic -g oslab3_probe
+[    6.392875] yangs8847 kernel: oslab3_probe: loading out-of-tree module taints kernel.
+[    6.392880] yangs8847 kernel: oslab3_probe: module verification failed: signature and/or required key missing - tainting kernel
+[    6.393190] yangs8847 kernel: oslab3_probe: init at 6370 ms on kernel 6.12.110-oslab3-xxx
+command_exit=0
+
+COLLECTION_SUMMARY command_failures=0

@@ -158,8 +158,8 @@
 \kernelver 内核，最后通过运行版本、内核日志、SSH 网络连通性及系统服务状态进行验证。
 实验过程保留源码定位、配置、编译、安装与启动证据，形成可复现的命令和日志链。
 额外实现一个可加载的内核探针，通过 procfs 与内核日志观察模块初始化，并在实际重启后完成九项检查。
-运行数据采集于 2026 年 9 月 21 日；10 月 5 日首次发布，10 月 7 日补充文档和交互证据。
-个人字段保留 XXX，现附带个人标题的真实对话截图。补充检查完成本机夹具自测，尚未完成实机验证。
+基础运行数据采集于 2026 年 9 月 21 日；10 月 5 日首次发布，10 月 7 日补充文档和交互证据，
+并在虚拟机内完成九项复验与六项补充检查，均通过。个人字段保留 XXX，现附带个人标题的真实对话截图。
 
 \textbf{关键词：} Linux 内核；x86\_64；启动初始化；start\_kernel；GRUB；内核编译
 
@@ -572,11 +572,39 @@ E06 显式检查退出码，避免查询失败被当成“无失败单元”。
 本机执行 \texttt{--self-test} 的 8 项夹具用例通过，覆盖正常数据、错误内核、时间倒退、
 装载时间变化、非法字段、查询失败和非空/空查询。原始输出见
 \path{report/logs/contract-self-test-20261007.txt}。
-这只验证判定逻辑，不是新内核或真实权限测试。本次 SSH 超时，E01--E06 实机结果均为未运行；
-不把自测与历史九项 PASS 合并计数，也不宣称补充检查已在虚拟机通过。
+上述自测只验证判定逻辑，与下述实机结果分开记录。早先 SSH 连接超时后，实验者开启虚拟机，
+2026 年 10 月 7 日 18:18（UTC+8）使用普通用户 UID 1000 完成补测：历史九项再次 9/9 通过，
+E01--E06 共 6/6 通过，两组测试退出码均为 0。完整输出见
+\path{report/logs/supplemental-vm-20261007.txt}；其中记录命令、退出码与测试脚本 SHA-256，
+远端脚本摘要与仓库文件一致。
+
+\begin{table}[H]
+\centering
+\caption{2026 年 10 月 7 日补充接口实测结果}
+\begin{tabularx}{\textwidth}{p{0.15\textwidth}X}
+\toprule
+检查 & 实际结果 \\
+\midrule
+E01--E02 & PASS，字段完整，内核版本一致且状态为 ready \\
+E03 & PASS，装载时间均为 6370 ms；当前时间从 653292 增至 653343 ms \\
+E04 & PASS，权限为 0444 \\
+E05 & PASS，普通用户写打开被拒绝，errno=13；没有写入数据 \\
+E06 & PASS，查询退出码为 0，标准输出和错误输出均为空 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+本次启动标识为 \path{be9c2642-9f41-488d-b332-7abd572119e1}，开机时间为 18:07:10。
+Agent 接入后未重启或手动加载模块。加载服务 \texttt{Result=success}、\texttt{ExecMainStatus=0}，
+内核日志有探针 init 记录；服务 journal 查询却为空，不能把命令退出 0 当成取得了服务加载轨迹。
+6370 ms 属于本次启动，6557 ms 属于 9 月 21 日启动，两者不是同一采样。
+
+\evidencefigure{figures/supplemental-test-20261007.png}{补测真实终端截图：保存的测试输出与当前启动标识}{补测截图}
+截图采集于 18:19:28，展示 18:18:03 保存的输出，并同时读取当前内核与 boot ID；不是再次执行测试。
+写打开检查仅针对普通用户，不扩展为 root、并发卸载或攻击场景安全性结论。
 
 \section{启动性能分析}
-本次启动由 \texttt{systemd-analyze time} 测得：内核阶段 5.890 s，用户空间阶段 7.305 s，
+2026 年 9 月 21 日的基线启动由 \texttt{systemd-analyze time} 测得：内核阶段 5.890 s，用户空间阶段 7.305 s，
 总计 13.196 s，\texttt{graphical.target} 在用户空间 7.212 s 到达。最长的三个服务为
 \path{snapd.seeded.service}（3.007 s）、\path{snapd.service}（2.942 s）和
 \path{systemd-udev-settle.service}（2.657 s）。关键链经过
@@ -797,6 +825,8 @@ bash tests/collect-boot-performance.sh "$run_dir"
     \path{docs/test-matrix.md} & 功能、测试结果和证据边界 \\
     \path{tests/check_probe_contract.py} & 补充接口检查与夹具自测 \\
     \path{report/logs/contract-self-test-20261007.txt} & 本机自测输出，非实机结果 \\
+    \path{report/logs/supplemental-vm-20261007.txt} & 10 月 7 日实机补测完整记录 \\
+    \path{report/scripts/run-supplemental-verification.sh} & 补测命令及退出码采集脚本 \\
   \bottomrule
 \end{longtable}
 

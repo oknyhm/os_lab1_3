@@ -1,5 +1,5 @@
 # Evidence integrity manifest updated 2026-10-07.
-# Historical VM runs: 2026-09-21. New fixture self-test: 2026-10-07 (not live VM).
+# Historical VM runs: 2026-09-21. Live VM retest and separate fixture self-test: 2026-10-07.
 # Includes four reviewed dialogue screenshots, one explicitly pixel-redacted.
 # Integrity checks do not establish authenticity or constitute a digital signature.
 # Paths relative to repository root: sha256sum --strict -c docs/evidence-sha256.txt
@@ -7,7 +7,7 @@ b7436f425dd14856fc552a81f4611ba07c657ef40fe03ec1c3e2fb67ebe5d2b0  ai-record/检�
 241f93f8ee9e2229f1a5b51ed4a3a8af98421d3899979784f23550950fd4d90c  ai-record/完成.png
 17df4df70b6ccea9ab4c0441a9d8ca0185fcca871b0e179f369371e18cc2ae35  ai-record/询问实验难度.png
 47d8db3fbb7b0de62ef87a39d91abbbef37ca37c9719bf70b214b1408bb4fba3  ai-record/执行.png
-cf54a42f53308f3aad1360080ce21d44afc7a0be124f3a6f7e9db9803fde7adc  output/pdf/实验三_Linux启动初始化过程探析_XXX.pdf
+d110be8feaaa742f11d7f4ded55ea5ea3cc8e5d55e87530381f3d6eaf874ebf8  output/pdf/实验三_Linux启动初始化过程探析_XXX.pdf
 5b2f30624bb4a444d5ae2c2d0558baa0f175ea83d84bf464804f8262711eec3d  report/figures/boot-analysis.svg
 82b9ba5cc1e0fe1a4fd307e3d96ee0b459f9982e7517e26667f7ba39758df2c1  report/figures/boot-verify.png
 11735c2153fffbf5bf98fe1f0a2307d3c0b89795723dab531436a2d9f18cd6b4  report/figures/build-result.png
@@ -15,6 +15,7 @@ cf54a42f53308f3aad1360080ce21d44afc7a0be124f3a6f7e9db9803fde7adc  output/pdf/实
 94ceefb5592a2c2038605e4eb52f990dbe3a21c320d166d0d67eb9804272601b  report/figures/extra-design-test.png
 ec4453f0e1e910b1662bcdca7fc2cba3ddd6b27496fdaa01b552059fab674cf3  report/figures/kernel-config.png
 14e206b9ad20cd00184fa94090b4d238d5a2e0f6a811d89a78a5f7d147b1e9c8  report/figures/source-analysis.png
+5a8dd3d8ee55f4e58050889fa7976fd7543e00dbd5f772361e6e24b96fed0cf2  report/figures/supplemental-test-20261007.png
 3e6c0fa25ab343dad089838b8aa75aaf44d2d172e451dc1261ccdbc6ed66180b  report/logs/boot-performance.txt
 92eb5d03d18c97ee293d55d65fd12e8169df728954d8a16df9820a982542e1bd  report/logs/boot-verification.txt
 ed65e4f4ec0f0c7605eb2290d7538a87d2199aa325ec9f8ab3378d4c9a07c497  report/logs/build.log
@@ -32,3 +33,4 @@ a08f25d4076894e8efe9c0f17bb93204bbebb4d8f0e92ad39df3e45fd98bfad2  report/logs/in
 774be4110f576c17504bb0741dad638dff25c68fecde2628e4edc2b084ca63b1  report/logs/kernel-config-6.12.110-oslab3-xxx
 ccbc5c1d5e89c73fc113f3e76c1b5f4b96888f7d4bf5ee7b1696be3198f1332d  report/logs/linux-6.12.110.sha256
 5bf6687d26e554afc2eae08ef1777a3165d3a0937ed7a8c319ff10772c07613b  report/logs/source-index.txt
+bd960ad98189ba7ec18c0c2e70e06520efd092fc53e6c173cc197b90b6cd2a1d  report/logs/supplemental-vm-20261007.txt

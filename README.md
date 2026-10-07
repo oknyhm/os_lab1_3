@@ -6,7 +6,7 @@
 
 ## 完成情况与证据
 
-运行证据采集于 **2026-09-21**；**2026-10-05** 进行材料整理、报告修订和仓库发布。2026-10-07 补充文档与截图；SSH 连接超时，没有重新运行虚拟机实验，以下数字均来自保存的原始日志。补充检查的本机自测与历史实机结果分开记录。
+基础实验运行证据采集于 **2026-09-21**，**2026-10-05** 首次发布。**2026-10-07 18:18（UTC+8）** 在用户开启的虚拟机内完成补测：历史九项检查再次 9/9 通过，补充接口检查 6/6 通过。早先 SSH 超时后仅完成本机自测的状态已由本次实机结果补齐；历史日志不覆盖。下表原有构建、性能数字仍为 9 月 21 日记录。
 
 | 内容 | 已观察到的结果 | 证据 |
 |---|---|---|
@@ -16,6 +16,7 @@
 | 额外设计：内核启动探针 | `/proc/oslab3_boot` 提供开机相对时间、内核版本与状态；可加载/卸载 | [源码](extra-design/oslab3_probe.c)、[手动测试日志](report/logs/extra-design-manual-test.log) |
 | 探针启动后检查 | 当次 9 项检查全部 PASS，装载时间为开机后 6557 ms | [测试脚本](tests/test_boot_probe.sh)、[结果](report/logs/extra-design-test.log) |
 | 启动性能观测 | 内核 5.890 s + 用户空间 7.305 s；工具报告总计 13.196 s | [性能记录](report/logs/boot-performance.txt)、[原始 SVG](report/figures/boot-analysis.svg) |
+| 10 月 7 日实机补测 | 九项复验 9/9、补充检查 6/6；本次装载时间 6370 ms | [完整命令、退出码及输出](report/logs/supplemental-vm-20261007.txt)、[真实终端截图](report/figures/supplemental-test-20261007.png) |
 
 个人字段保持 `XXX`。已收录四张带个人标题的[对话截图](ai-record/README.md)，其中一张经授权仅遮盖密码值，保留用户名及消息其他内容，原图仅留本地；同时保留文字节选和事后摘要。截图未覆盖全部故障诊断与探针设计轮次。历史回复中的 EXT4 口误、旧版报告页数均已在索引说明。
 
@@ -29,7 +30,7 @@ tests/                            历史九项检查、补充接口检查及性�
 report/main.tex                   报告源文件
 report/scripts/                   原实验执行、采集和截图辅助脚本
 report/logs/                      原始编译、安装、启动与测试日志及内核配置
-report/figures/                   六张实机截图和原始启动时序 SVG
+report/figures/                   七张实机截图和原始启动时序 SVG
 output/pdf/                       一份最终报告 PDF
 docs/                            测试矩阵、证据 SHA-256 清单
 ai-record/                       经审阅的对话截图、文字节选与证据索引
@@ -85,7 +86,13 @@ bash tests/collect-boot-performance.sh "$run_dir"
 
 `tests/check_probe_contract.py` 使用 Python 3 标准库，检查字段完整性、内核/状态一致性、两次读取的时间关系、0444 权限、拒绝写打开，以及失败单元查询的退出状态。写打开检查不截断文件、不写入数据，使用普通用户执行；它不证明 root/并发/攻击场景安全性，也不证明自动加载。
 
-本机夹具自测：`python tests/check_probe_contract.py --self-test`，8 项通过，原始输出见 [自测日志](report/logs/contract-self-test-20261007.txt)。这是测试判定逻辑的自测，不是 VM 内核结果；权限、真实 procfs 和 systemd 的端到端检查尚待执行。
+本机夹具自测：`python tests/check_probe_contract.py --self-test`，8 项通过，原始输出见 [自测日志](report/logs/contract-self-test-20261007.txt)。这是判定逻辑自测，与实机结果分开记录。
+
+实机补测：普通用户 UID 1000 执行，E01–E06 全部 PASS。两次当前开机时间为 653292/653343 ms，装载时间均为 6370 ms；权限为 0444，写打开返回 EACCES（errno=13），失败单元查询退出码 0 且输出为空。完整日志记录启动 ID、脚本 SHA-256 与每条命令退出码，见 [补测日志](report/logs/supplemental-vm-20261007.txt)。
+
+本次未重装内核、重启或手动重载模块。启动 ID 为 `be9c2642-9f41-488d-b332-7abd572119e1`；加载服务 Result=success、ExecMainStatus=0，内核日志含初始化记录，但该服务的 journal 查询为空。配置、早期装载时间和内核日志相互支持，不把“服务日志为空但命令返回 0”视为完整自动加载轨迹。
+
+可从仓库根目录执行 `bash report/scripts/run-supplemental-verification.sh` 收集相同项目；该脚本不重启、不安装模块。截图是 Konsole 展示保存的测试输出，同时核对当前内核与 boot ID，截图时刻与测试时刻明确分开。
 
 在目标虚拟机、仓库根目录执行下列命令收集新结果：
 ```bash
