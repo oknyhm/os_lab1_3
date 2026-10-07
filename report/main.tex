@@ -22,6 +22,7 @@
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage{setspace}
+\usepackage{needspace}
 
 \setmainfont{TeX Gyre Termes}
 \setsansfont{TeX Gyre Heros}
@@ -62,9 +63,16 @@
 \fancyhead[R]{Linux 启动初始化过程探析}
 \fancyfoot[C]{第 \thepage\ 页，共 \pageref{LastPage} 页}
 \renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{
+\fancyhf{}
+\fancyhead[L]{操作系统实验三}
+\fancyhead[R]{Linux 启动初始化过程探析}
+\fancyfoot[C]{第 \thepage\ 页，共 \pageref{LastPage} 页}
+\renewcommand{\headrulewidth}{0.4pt}
+}
 
 \ctexset{
-  chapter={format=\Huge\bfseries\color{osblue},number=\chinese{chapter}},
+  chapter={format=\LARGE\bfseries\color{osblue},number=\chinese{chapter},beforeskip=12pt,afterskip=18pt},
   section={format=\Large\bfseries\color{osblue}},
   subsection={format=\large\bfseries\color{osgray}}
 }
@@ -150,8 +158,8 @@
 \kernelver 内核，最后通过运行版本、内核日志、SSH 网络连通性及系统服务状态进行验证。
 实验过程保留源码定位、配置、编译、安装与启动证据，形成可复现的命令和日志链。
 额外实现一个可加载的内核探针，通过 procfs 与内核日志观察模块初始化，并在实际重启后完成九项检查。
-本报告的运行数据采集于 2026 年 9 月 21 日；2026 年 10 月 5 日整理公开提交材料。
-个人信息按要求以 XXX 占位，带个人标题的原始对话截图尚未补齐，现附脱敏对话文字节选及证据索引。
+运行数据采集于 2026 年 9 月 21 日；10 月 5 日首次发布，10 月 7 日补充文档和交互证据。
+个人字段保留 XXX，现附带个人标题的真实对话截图。补充检查完成本机夹具自测，尚未完成实机验证。
 
 \textbf{关键词：} Linux 内核；x86\_64；启动初始化；start\_kernel；GRUB；内核编译
 
@@ -167,7 +175,8 @@
   \item 建立“源码调用路径—启动日志—运行结果”三者之间的一致性证据。
 \end{enumerate}
 
-\section{任务与评分点映射}
+\section{任务与证据映射}
+本报告按实验指导的内容要求组织\cite{guide}。
 \begin{table}[H]
   \centering
   \caption{实验要求与本文证据的对应关系}
@@ -176,10 +185,10 @@
     实验要求 & 对应章节 & 主要证据 \\
     \midrule
     下载和研读内核源码 & 第 3、4 章 & kernel.org 发布信息、SHA-256、源码文件与行号 \\
-    分析启动初始化机理 & 第 4 章 & 分阶段流程图、关键入口、处理器相关/无关部分划分 \\
+    分析启动初始化机理 & 第 3、4 章 & 分阶段流程图、关键入口、处理器相关/无关部分划分 \\
     编译并启用内核 & 第 5、6 章 & 配置、编译日志、内核产物、GRUB 和新内核运行结果 \\
     一致性检查 & 第 7 章 & \texttt{uname}、\texttt{journalctl -b -k} 与源码对照 \\
-    Agent 协作与过程证据 & 第 10 章 & 运行截图、脱敏对话节选；个人标题截图待补 \\
+    Agent 协作与过程证据 & 第 10 章 & 运行截图、个人标题对话截图与文字节选 \\
     \bottomrule
   \end{tabularx}
 \end{table}
@@ -196,7 +205,7 @@
     \midrule
     虚拟化平台 & VMware Workstation，虚拟硬件版本 21，NAT 网络 \\
     客户机系统 & Ubuntu/Kubuntu 24.04.3 LTS，x86\_64 \\
-    处理器与内存 & 2 个虚拟 CPU，3.8 GiB 可用内存，511 MiB Swap \\
+    处理器与内存 & 2 个虚拟 CPU，系统可见总内存 3.8 GiB，511 MiB Swap \\
     存储 & 根分区 196 GiB（实验开始时约 185 GiB 可用）；\texttt{/boot} 4.0 GiB \\
     原始内核 & \oldkernel \\
     目标内核 & \kernelver \\
@@ -207,13 +216,12 @@
   \end{tabularx}
 \end{table}
 
-\evidencefigure{figures/env-baseline.png}{Kubuntu 虚拟机实验环境基线}{待生成环境基线截图}
-
 \section{远程操作与证据策略}
 为降低长时间编译过程中桌面操作的干扰，先配置 Windows 主机到虚拟机的 SSH 公钥认证。
 公钥仅追加到 \texttt{\textasciitilde/.ssh/authorized\_keys}，保留密码认证作为回退。
 终端证据由 Kubuntu 桌面会话中的 Konsole 实际执行命令后，通过 Spectacle 捕获整个虚拟机
 桌面，截图同时包含 XXX、主机名、时间和内核版本，避免仅有孤立文本日志。
+\evidencefigure{figures/env-baseline.png}{Kubuntu 虚拟机实验环境基线}{待生成环境基线截图}
 
 \chapter{Linux 启动初始化原理}
 
@@ -247,7 +255,7 @@
   \caption{x86\_64 传统实模式引导路径的源码概览}
 \end{figure}
 该图展示传统实模式引导路径。引导器也可能从保护模式入口交接；本实验未追踪 GRUB 实际跳转地址，
-运行日志用于核对启动结果，不证明图中各函数逐一执行。
+运行日志用于核对启动结果，不证明图中各函数逐一执行。入口约定参见 Boot Protocol\cite{kernelboot}。
 
 \section{处理器相关部分}
 x86\_64 相关代码集中在 \texttt{arch/x86}。BIOS 将控制权交给 GRUB 后，GRUB 按 Linux
@@ -265,7 +273,7 @@ Boot Protocol 装入内核和 initramfs。\texttt{arch/x86/boot/header.S} 提供
 \chapter{源码研读与关键入口}
 
 \section{源码来源与完整性标识}
-本实验选择 kernel.org 于 2026 年 9 月 14 日发布的 Linux \sourcever 长期维护版。下载地址为：
+本实验采用 Linux \sourcever 源码\cite{kernelsource}；维护信息以发布站点为准\cite{kernelreleases}。下载地址为：
 \begin{center}
 \url{https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.110.tar.xz}
 \end{center}
@@ -343,6 +351,21 @@ for (fn = initcall_levels[level];
 就绪时请求创建内核线程。随后启动 CPU idle 调度，内核初始化线程继续执行 initcall 并尝试
 运行 \texttt{/sbin/init}；本机最终由 systemd 接管用户空间。
 
+\section{构建规则与配置的联系}
+以下两行分别摘自已保存的 \path{source-index.txt} 中顶层 Makefile 第 754 行和
+\path{arch/x86/Makefile} 第 286 行，属于非连续摘录：
+\begin{lstlisting}[numbers=none]
+all: vmlinux
+libs-y  += arch/x86/lib/
+\end{lstlisting}
+第一行关联默认目标与内核 ELF 映像，第二行加入 x86 库目录。Makefile 是构建规则，不是启动时执行的代码。
+Kbuild 依据配置选择编译对象，映像经体系结构相关封装生成引导产物\cite{kernelbuild}。
+
+最终配置中的 \texttt{CONFIG\_SCSI=y}、\texttt{CONFIG\_BLK\_DEV\_SD=y} 表示编入内核；
+\texttt{CONFIG\_BTRFS\_FS=m}、\texttt{CONFIG\_FUSION\_SPI=m}、\texttt{CONFIG\_E1000=m} 表示构建为模块。
+涉及根文件系统的模块还需由 initramfs 提供，不能仅凭配置中的 m 判断一定能启动。
+本实验以实际 Btrfs 根挂载验证可启动性，未记录 initramfs 内部文件逐项清单。
+
 \chapter{内核配置、编译与安装}
 
 \section{配置策略}
@@ -350,7 +373,7 @@ for (fn = initcall_levels[level];
 \begin{enumerate}
   \item 从 \texttt{/boot/config-\oldkernel} 复制当前可启动配置；
   \item 使用 \texttt{make olddefconfig} 适配 Linux \sourcever 的新选项；
-  \item 使用 \texttt{make localmodconfig} 保留当前硬件所需模块；
+  \item 使用 \texttt{make localmodconfig} 根据当前已加载模块裁剪配置，再核对启动必需驱动；
   \item 设置 \texttt{CONFIG\_LOCALVERSION="-oslab3-xxx"}；
   \item 清空发行版源码树专用证书路径，避免上游源码缺少 Ubuntu 证书文件；
   \item 核对 Btrfs、SCSI、\texttt{mptspi} 与 \texttt{e1000} 等关键配置。
@@ -374,7 +397,7 @@ export PATH=/usr/lib/ccache:$PATH
 
 \clearpage
 \section{安装与回退设计}
-本实验按用户要求不建立 VMware 快照。为控制风险，原内核 \oldkernel 始终保留，且不清理
+本实验选择不建立 VMware 快照。为控制风险，原内核 \oldkernel 始终保留，且不清理
 旧模块或 GRUB 条目。安装步骤为：
 \begin{lstlisting}[language=bash]
 sudo make modules_install
@@ -386,7 +409,7 @@ sudo update-grub
 \end{lstlisting}
 安装后得到 13 MiB 的内核映像和 53 MiB 的 initramfs，\texttt{/boot} 尚余 3.4 GiB。GRUB
 同时列出新内核及原内核 \oldkernel 的普通、恢复模式条目；若新内核无法启动，仍可从
-Advanced options 选择原内核恢复。
+Advanced options 选择原内核尝试恢复；本实验未实际测试旧内核回退启动。
 
 \chapter{启动运行与测试验证}
 
@@ -405,6 +428,8 @@ journalctl -b -k --no-pager
 \evidencefigure{figures/boot-verify.png}{自编译内核运行、启动参数与 SSH 状态验证}{待重启验证后自动生成}
 
 \section{两次启动验证与异常定位}
+本节异常细节依据当时的诊断过程记录。仓库保留修复脚本、备份摘要和修复后的状态，
+但没有完整修复前输出及 diff，不能仅凭备份摘要独立复核全部诊断。
 首次选择新内核后，内核已完成解压、驱动加载、Btrfs 根子卷挂载并进入 systemd，但系统进入
 emergency mode。按 Ctrl+D 后桌面和 SSH 正常启动，\texttt{uname -r} 已返回 \kernelver。
 \texttt{systemctl --failed} 仅列出 \texttt{etc-libvirt.mount} 与
@@ -472,9 +497,10 @@ Linux \kernelver 已在 VMware 中完成实际启动。Btrfs 根文件系统、s
   \caption{启动可观测探针的数据与验证路径}
 \end{figure}
 
+\Needspace{23\baselineskip}
 \section{内核实现与接口}
 模块使用 \texttt{ktime\_get\_boottime\_ns()} 取得包含休眠时间的开机相对时间，使用 procfs 的
-\texttt{seq\_file} 接口提供稳定的只读输出。关键逻辑如下：
+\texttt{seq\_file} 接口提供只读输出。关键逻辑如下：
 \begin{lstlisting}[language=C]
 static int __init oslab3_probe_init(void)
 {
@@ -492,12 +518,12 @@ module_init(oslab3_probe_init);
 module_exit(oslab3_probe_exit);
 \end{lstlisting}
 读取接口实际得到目标版本 \kernelver、开机后 6557 ms 装载以及状态 ready 三项核心字段。
-该接口证明输出来自正在运行的目标内核，而不是预先准备的静态文本。
+结合模块源码、procfs 输出和装载日志，可核对模块运行状态；单张截图不能替代代码和测试记录。
 
 \section{生命周期与自动加载验证}
-首先在不重启的条件下进行手动生命周期测试：\path{modprobe -r oslab3_probe} 后确认
+安装脚本先部署模块和 modules-load 配置并立即加载，再在不重启的条件下进行手动生命周期测试：\path{modprobe -r oslab3_probe} 后确认
 \path{/proc/oslab3_boot} 消失，再执行 \path{modprobe oslab3_probe}，接口重新出现，内核日志依次
-记录 \texttt{exit} 与 \texttt{init}。随后安装 modules-load 配置并重启。重启后未执行手动装载命令，
+记录 \texttt{exit} 与 \texttt{init}。随后保留已安装的配置并重启。重启后未执行手动装载命令，
 模块仍在开机后 6557 ms 出现，结合自动加载配置和该次重启过程支持自动加载结论。
 此处模块在用户空间服务触发装载后才运行初始化函数；它没有被编进内核，也没有用于测量
 \texttt{start\_kernel()} 之前的启动阶段。\texttt{module\_init()} 对可加载模块在装载时调用，
@@ -508,7 +534,7 @@ module_exit(oslab3_probe_exit);
 实验没有关闭内核的相关告警，也没有把提示从日志中隐藏。
 
 \section{测试代码与实际结果}
-\path{tests/test_boot_probe.sh} 对每个声明逐项判断并在失败时返回非零状态。表~\ref{tab:probe-tests}
+历史 \path{tests/test_boot_probe.sh} 检查表中九项条件，并对检测出的失败返回非零状态。表~\ref{tab:probe-tests}
 给出本次重启后的真实结果；完整输出保存于 \path{report/logs/extra-design-test.log}。
 
 \begin{table}[H]
@@ -522,7 +548,7 @@ module_exit(oslab3_probe_exit);
     T01 & 运行内核版本 & PASS，\kernelver \\
     T02 & 模块位于 \texttt{lsmod} & PASS，大小 12288 B，引用计数 0 \\
     T03--T04 & procfs 可读且状态为 ready & PASS \\
-    T05 & 启动阶段自动加载 & PASS，开机后 6557 ms \\
+    T05 & 装载时间小于两分钟 & PASS，开机后 6557 ms \\
     T06 & 本次启动存在 init 内核日志 & PASS \\
     T07--T09 & systemd、SSH、失败单元 & PASS，running、active、0 \\
     \bottomrule
@@ -535,6 +561,19 @@ T09 只检查失败单元数量，未独立验证查询命令错误；因此九�
 应以实际字段、重启后九项结果和截图交叉验证。历史脚本及日志保留原样，避免修改后与既有证据不一致。
 
 \evidencefigure{figures/extra-design-test.png}{启动探针 9 项自动化测试与 procfs 实际输出}{待登录桌面后生成测试截图}
+
+\section{补充接口检查与验证状态}
+2026 年 10 月 7 日增加 \path{tests/check_probe_contract.py}，保持历史九项脚本和日志不变。
+补充检查包含：E01 字段完整性及时间格式；E02 内核版本与状态一致；
+E03 两次读取时装载时间不变、当前时间递增；E04 权限为 0444；
+E05 普通用户写打开被拒绝（不截断、不写入数据）；E06 查询成功且失败单元输出为空。
+E06 显式检查退出码，避免查询失败被当成“无失败单元”。
+
+本机执行 \texttt{--self-test} 的 8 项夹具用例通过，覆盖正常数据、错误内核、时间倒退、
+装载时间变化、非法字段、查询失败和非空/空查询。原始输出见
+\path{report/logs/contract-self-test-20261007.txt}。
+这只验证判定逻辑，不是新内核或真实权限测试。本次 SSH 超时，E01--E06 实机结果均为未运行；
+不把自测与历史九项 PASS 合并计数，也不宣称补充检查已在虚拟机通过。
 
 \section{启动性能分析}
 本次启动由 \texttt{systemd-analyze time} 测得：内核阶段 5.890 s，用户空间阶段 7.305 s，
@@ -556,7 +595,8 @@ T09 只检查失败单元数量，未独立验证查询命令错误；因此九�
 正常。实验未删除或改写这些用户原有源，而是使用可用的官方索引安装依赖。与此同时，
 \texttt{unattended-upgrade} 长时间占用接近 100\% CPU 和 \texttt{dpkg} 锁。确认其尚未启动
 \texttt{dpkg} 子进程且 \texttt{dpkg --audit} 无异常后，先由 systemd 正常停止任务，再结束
-未响应的求解进程，随后包安装完成。
+未响应的求解进程，随后包安装完成。以上依据执行阶段对话反馈，未保留完整诊断输出；
+过程叙述不是原始命令日志。
 
 \section{配置交互与可启动性}
 首次执行 \texttt{localmodconfig} 时，新选项触发交互提问，后续命令被终端当作回答。发现后
@@ -569,7 +609,7 @@ T09 只检查失败单元数量，未独立验证查询命令错误；因此九�
 ``failed to find .BTF ELF section''。结合 4 GiB 内存限制，排查时怀疑内存压力；现存证据未包含 OOM
 终止记录，因此不把具体终止原因作为已证明的事实。BTF 是内核调试和 eBPF 类型描述
 使用的可选信息，并非启动验证必需项。故保留失败日志，设置
-\texttt{CONFIG\_DEBUG\_INFO\_BTF=n} 后增量重编译；启动所需驱动不变，链接内存需求则降低。
+\texttt{CONFIG\_DEBUG\_INFO\_BTF=n} 后增量重编译；保留启动所需驱动，避免该 BTF 生成步骤。未保留完整前后内存对照，不量化内存改善。
 
 \section{首次启动的 emergency mode}
 首次重启后屏幕提示进入 emergency mode，但 Ctrl+D 后能进入桌面，且运行版本、根分区、网络
@@ -590,9 +630,10 @@ Kubuntu X11 桌面截图，便于核验实验过程。E09 截图同时展示已�
 
 \section{协作方式}
 Windows 侧 Agent 通过免密 SSH 在实验虚拟机中执行可复现命令，并将源码、日志和截图整理进同一实验目录。
-用户确定实验范围、不建快照及先备份再修复的操作顺序，并完成桌面登录及重启界面观察；Agent 实际承担
+实验者确定范围、不建快照及先备份再修复的操作顺序，并完成桌面登录及重启界面观察；Agent 实际承担
 源码分析、探针与测试脚本编写、命令执行、日志收集和报告编译。旧内核保留方案由 Agent 实施。
-本报告如实声明协作方式；个人对关键原理的掌握仍需通过复述、修改和现场演示进一步证明。
+本报告区分 Agent 的实现工作与实验者的操作反馈。第十一章问答由 Agent 协助整理，
+用于复习，不作为实验者已独立实现或已完成现场解释的证明。
 
 \section{对话、实现与日志的一致性}
 \begin{table}[H]
@@ -611,9 +652,23 @@ Windows 侧 Agent 通过免密 SSH 在实验虚拟机中执行可复现命令，
   \end{tabularx}
 \end{table}
 
-截至 2026 年 10 月 5 日，用户尚未截取原始对话。\path{ai-record/dialogue-excerpts.md}
-收录当前会话可见的用户授权和 Agent 回复节选，\path{ai-record/interaction-summary.md} 提供事后整理的索引，
-两者均不替代原始截图或完整平台导出。后续补充含个人信息标题的截图时需排除密码及私钥。
+2026 年 10 月 7 日补充的可公开截图位于 \path{ai-record/}：
+“询问实验难度.png”记录选题，“执行.png”记录授权、配置与启动异常，
+“完成.png”记录基础实验完成反馈。含凭据原图不进入公开提交。
+“检查配置以及书写方案\_已脱敏.png”记录环境核对和方案，按授权以本地实心矩形仅遮盖密码值，
+其余画面保留；脱敏方法见证据索引。本次共收录四张截图，其中一张是明确标注的脱敏副本。
+截图尚未覆盖 BTF 故障细节和探针设计的全部轮次。
+\path{ai-record/dialogue-excerpts.md} 是原文节选，
+\path{ai-record/interaction-summary.md} 是事后摘要，均非完整平台导出。
+
+执行图中的 EXT4 描述是 Agent 口误，实际根文件系统以日志中的 Btrfs 为准；
+完成图中的 23 页对应当时版本，不是后续修订版。截图标题已有个人标记，正文个人字段仍保留 XXX。
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.96\textwidth]{../ai-record/完成.png}
+\caption{个人标题对话截图：基础实验完成反馈（历史版本）}
+\end{figure}
+其余长截图保留原始分辨率供在仓库放大查阅，不缩成难以辨认的整页插图。
 当前公开仓库：\url{https://github.com/oknyhm/os_lab1_3}。仓库名称按用户要求设定，内容仅涵盖实验三。
 
 \chapter{疑难解惑、经验与结论}
@@ -630,14 +685,36 @@ Windows 侧 Agent 通过免密 SSH 在实验虚拟机中执行可复现命令，
   可避免与发行版内核混淆，并使 \texttt{uname -r}、模块目录、initramfs 和 GRUB 条目形成一致标识。
 \end{description}
 
+\section{四个关键原理问题}
+以下解释结合现有实现与日志，由 Agent 协助整理；不是新增实机测试或独立完成声明。
+\begin{description}[style=nextline]
+\item[进入 emergency mode 是否说明新内核启动失败？]
+不一定。它可能出现在内核进入用户空间之后。本次 \texttt{uname -r} 返回新内核版本，
+Btrfs 根分区已挂载，说明应继续检查 systemd 挂载和服务，而不能仅凭未进入桌面就判定内核失败。
+当时诊断指向失效的 libvirt 挂载配置，修复后系统恢复。
+\item[Btrfs 编译成模块，如何挂载 Btrfs 根文件系统？]
+引导器同时加载内核和 initramfs，早期用户空间从内存中的 initramfs 加载存储及 Btrfs 模块，
+再挂载真正的根文件系统并切换过去。前提是 initramfs 包含匹配版本的模块及依赖；
+模块仅安装在尚未挂载的根分区中，并不足以保证启动。
+\item[6557 ms 测量的是什么？]
+它是模块初始化函数执行时读取的开机相对时间，包含时钟定义中的休眠时间。
+没有测量函数结束与开始的差值，因此不是模块执行耗时，也不是
+\texttt{start\_kernel()} 或整个启动过程的总耗时。本探针在用户空间服务触发加载时才执行。
+\item[为什么早期手动加载也能通过 T05？]
+T05 只判断装载时间小于 120000 ms。开机后第 30 秒手动加载同样满足阈值，
+所以只能证明较早装载。自动加载结论还要结合配置、真实重启及没有手动加载的过程；
+最好同时保留 boot ID、模块加载服务日志和内核日志。
+\end{description}
+
 \section{结论与体会}
 本实验将 Linux 启动过程从抽象描述落实到具体源码文件、函数入口、配置选项、编译产物和启动日志。
 最重要的认识是：启动并非单个函数完成，而是固件、引导器、处理器模式切换、体系结构相关初始化、
-通用内核子系统和用户空间 PID 1 逐级交接的过程。配置裁剪提高了编译效率，但必须以当前运行硬件
-和可回退内核为安全边界。最终通过两次真实重启、运行版本、Btrfs 根挂载、systemd、网络与 SSH
+通用内核子系统和用户空间 PID 1 逐级交接的过程。配置裁剪用于减少构建范围，未做裁剪前后耗时对照；配置变更必须以实际硬件
+和保留原内核为安全边界。基础实验通过两次真实重启、运行版本、Btrfs 根挂载、systemd、网络与 SSH
 状态验证源码分析，并区分内核问题与原系统陈旧 fstab 配置。额外设计的启动探针进一步把
 \texttt{module\_init()}、procfs、内核日志和 systemd 自动装载连成可运行、可卸载、可测试的闭环；
-这比只描述启动流程更能说明对内核与用户空间交接关系的理解。
+这一设计提供了观察模块装载与用户空间服务联系的具体入口。运行结果、测试覆盖与个人理解是不同层次，
+需要分别用日志、测试断言和本人解释支撑。
 
 \appendix
 \chapter{主要命令清单}
@@ -647,9 +724,10 @@ curl -fL -o linux-6.12.110.tar.xz \
   https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.12.110.tar.xz
 sha256sum linux-6.12.110.tar.xz
 tar -xf linux-6.12.110.tar.xz
+cd linux-6.12.110
 
-# 配置
-cp /boot/config-$(uname -r) .config
+# 配置：先核对实验环境
+cp /boot/config-6.11.0-26-kfocus .config
 make olddefconfig
 yes '' | make localmodconfig
 scripts/config --set-str LOCALVERSION '-oslab3-xxx'
@@ -664,14 +742,28 @@ make -j2
 sudo make modules_install
 sudo make install
 sudo update-grub
+sudo reboot
+# 在 GRUB 选择目标内核，重连 SSH 后验证
 uname -r
 journalctl -b -k --no-pager
 
-# 额外设计：脚本包含编译、安装、测试与证据收集
+\end{lstlisting}
+\Needspace{19\baselineskip}
+以下从本仓库根目录执行，安装需要目标内核及其已完成构建的源码树。新日志使用单独目录。
+\begin{lstlisting}[language=bash]
 cd extra-design
-./install-probe.sh
-../tests/test_boot_probe.sh
-../tests/collect-boot-performance.sh
+bash install-probe.sh
+sudo reboot
+# 重连后重新进入仓库根目录，不要手动加载模块
+run_dir="$(mktemp -d /tmp/oslab3-run.XXXXXX)"
+set -o pipefail
+bash tests/test_boot_probe.sh 2>&1 | tee "$run_dir/probe.log"
+test_rc=${PIPESTATUS[0]}
+printf 'test_exit=%s\n' "$test_rc" | tee -a "$run_dir/probe.log"
+python3 tests/check_probe_contract.py 2>&1 | tee "$run_dir/contract.log"
+test_rc=${PIPESTATUS[0]}
+printf 'test_exit=%s\n' "$test_rc" | tee -a "$run_dir/contract.log"
+bash tests/collect-boot-performance.sh "$run_dir"
 \end{lstlisting}
 
 \chapter{实验文件与日志}
@@ -703,11 +795,14 @@ cd extra-design
     \path{ai-record/README.md} & Agent 对话证据选择与脱敏说明 \\
     \path{ai-record/dialogue-excerpts.md} & 当前会话的脱敏文字节选（非完整导出） \\
     \path{docs/test-matrix.md} & 功能、测试结果和证据边界 \\
+    \path{tests/check_probe_contract.py} & 补充接口检查与夹具自测 \\
+    \path{report/logs/contract-self-test-20261007.txt} & 本机自测输出，非实机结果 \\
   \bottomrule
 \end{longtable}
 
 \endgroup
 \begin{thebibliography}{9}
+  \addcontentsline{toc}{chapter}{参考文献}
   \bibitem{kernelreleases}
   The Linux Kernel Archives. \emph{Active kernel releases}.\\
   \url{https://www.kernel.org/}

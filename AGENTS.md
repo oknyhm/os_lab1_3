@@ -7,7 +7,8 @@ This repository contains OS experiment 3, Linux boot initialization analysis, de
 - Read `README.md`, `docs/test-matrix.md`, and relevant source/log files before changing a claim.
 - Historical VM evidence was collected on 2026-09-21. Repository preparation occurred on 2026-10-05. Do not relabel old runs as new tests.
 - Keep raw files in `report/logs/` and original evidence screenshots intact. New test runs belong in separate timestamped locations. Never edit output to make a failed test look successful.
-- `ai-record/dialogue-excerpts.md` contains selected visible dialogue, not a full platform export. `interaction-summary.md` is an after-the-fact summary. Personal-title screenshots are outstanding until the user supplies them.
+- `ai-record/dialogue-excerpts.md` contains selected visible dialogue, not a full platform export. `interaction-summary.md` is an after-the-fact summary. Four personal-title screenshots were included on 2026-10-07, one as a user-approved local pixel-redacted derivative; its credential-bearing original stays local and ignored. See the index for remaining gaps and historical corrections.
+- Keep historical tests unchanged. Supplemental check self-tests use fixtures, not the VM; never present them as live kernel results.
 - Every supported behavior needs implementation, a test or reproducible command, and an actual result. State untested behavior and limits explicitly. Do not claim student understanding, full test coverage, successful fallback boot, performance improvement, or complete dialogue evidence without evidence.
 - The historical nine-check script has known limits described in README. If improving it, retain/version historical evidence and collect new results before claiming the new tests passed.
 - Preserve local baseline/debug artifacts even though they are ignored. Do not delete unrelated workspace files.

@@ -19,6 +19,10 @@
 /tests/*
 !/tests/test_boot_probe.sh
 !/tests/collect-boot-performance.sh
+!/tests/check_probe_contract.py
+
+# Credential-bearing original: local only, never publish.
+/ai-record/检查配置以及书写方案.png
 
 /report/*
 !/report/main.tex

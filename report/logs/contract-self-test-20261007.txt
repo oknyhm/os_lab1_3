@@ -1,0 +1,15 @@
+collected_at=2026-10-07T09:08:33.926359+00:00
+mode=fixture-self-test; NOT live VM results
+test_empty_success (__main__.ContractTests.test_empty_success) ... ok
+test_failed_query (__main__.ContractTests.test_failed_query) ... ok
+test_failed_unit (__main__.ContractTests.test_failed_unit) ... ok
+test_invalid_fields (__main__.ContractTests.test_invalid_fields) ... ok
+test_load_changed (__main__.ContractTests.test_load_changed) ... ok
+test_time_regression (__main__.ContractTests.test_time_regression) ... ok
+test_valid (__main__.ContractTests.test_valid) ... ok
+test_wrong_kernel (__main__.ContractTests.test_wrong_kernel) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.001s
+
+OK

@@ -1,8 +1,13 @@
-# Evidence integrity manifest prepared 2026-10-05.
-# Covers original logs, original screenshots/SVG, and the revised report PDF.
-# Historical run date: 2026-09-21; this is not a new runtime test or signature.
-# Paths are relative to the repository root; on Linux: sha256sum -c docs/evidence-sha256.txt
-09407e98f9746374c0d2bd28221490e50671398fe2374d9bff359466733127ec  output/pdf/实验三_Linux启动初始化过程探析_XXX.pdf
+# Evidence integrity manifest updated 2026-10-07.
+# Historical VM runs: 2026-09-21. New fixture self-test: 2026-10-07 (not live VM).
+# Includes four reviewed dialogue screenshots, one explicitly pixel-redacted.
+# Integrity checks do not establish authenticity or constitute a digital signature.
+# Paths relative to repository root: sha256sum --strict -c docs/evidence-sha256.txt
+b7436f425dd14856fc552a81f4611ba07c657ef40fe03ec1c3e2fb67ebe5d2b0  ai-record/检查配置以及书写方案_已脱敏.png
+241f93f8ee9e2229f1a5b51ed4a3a8af98421d3899979784f23550950fd4d90c  ai-record/完成.png
+17df4df70b6ccea9ab4c0441a9d8ca0185fcca871b0e179f369371e18cc2ae35  ai-record/询问实验难度.png
+47d8db3fbb7b0de62ef87a39d91abbbef37ca37c9719bf70b214b1408bb4fba3  ai-record/执行.png
+cf54a42f53308f3aad1360080ce21d44afc7a0be124f3a6f7e9db9803fde7adc  output/pdf/实验三_Linux启动初始化过程探析_XXX.pdf
 5b2f30624bb4a444d5ae2c2d0558baa0f175ea83d84bf464804f8262711eec3d  report/figures/boot-analysis.svg
 82b9ba5cc1e0fe1a4fd307e3d96ee0b459f9982e7517e26667f7ba39758df2c1  report/figures/boot-verify.png
 11735c2153fffbf5bf98fe1f0a2307d3c0b89795723dab531436a2d9f18cd6b4  report/figures/build-result.png
@@ -17,6 +22,7 @@ ed65e4f4ec0f0c7605eb2290d7538a87d2199aa325ec9f8ab3378d4c9a07c497  report/logs/bu
 be5abff02df7ccb1bbd786ec4cf1d4e36edd745b4306eb1f0cb03f1c122d6d67  report/logs/build-attempt1.log
 22c020a0c9cbd1b4461df4810ae3766f38e404b2cc3bcbc3b1a0d49eb49a247a  report/logs/build-time.txt
 0877b4ee320225fc6e2bfa1e542ea49f4817ec91700a5572ccac03803057ad1c  report/logs/configuration.log
+dc90025b72985f89f1d55ba70ce0a858578ff3a80ade062f5678a96bf1dde6f4  report/logs/contract-self-test-20261007.txt
 36098084c5b2dfe16f2ef5e6baadfd71487232c7ba300aa757e0623ce1956b30  report/logs/environment.txt
 a00495ae326bd7cce61644cbd5e4ed73311327c06a0b6e30909fcc084c3a1bde  report/logs/extra-design-install.log
 5a9a9aa9159e20e126ea825042c4a4494ee63488c6982e1ca3aa0cc594e0c377  report/logs/extra-design-manual-test.log

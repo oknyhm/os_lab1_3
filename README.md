@@ -6,7 +6,7 @@
 
 ## 完成情况与证据
 
-运行证据采集于 **2026-09-21**；**2026-10-05** 进行材料整理、报告修订和仓库发布。本次发布没有重新运行虚拟机实验，以下数字均来自保存的原始日志。
+运行证据采集于 **2026-09-21**；**2026-10-05** 进行材料整理、报告修订和仓库发布。2026-10-07 补充文档与截图；SSH 连接超时，没有重新运行虚拟机实验，以下数字均来自保存的原始日志。补充检查的本机自测与历史实机结果分开记录。
 
 | 内容 | 已观察到的结果 | 证据 |
 |---|---|---|
@@ -17,7 +17,7 @@
 | 探针启动后检查 | 当次 9 项检查全部 PASS，装载时间为开机后 6557 ms | [测试脚本](tests/test_boot_probe.sh)、[结果](report/logs/extra-design-test.log) |
 | 启动性能观测 | 内核 5.890 s + 用户空间 7.305 s；工具报告总计 13.196 s | [性能记录](report/logs/boot-performance.txt)、[原始 SVG](report/figures/boot-analysis.svg) |
 
-个人姓名、学号等保持 `XXX`。**带个人标题的原始对话截图尚未补齐**，目前附有[脱敏文字节选](ai-record/dialogue-excerpts.md)和明确标记的事后摘要。发布仓库不表示课程要求的个人标记和对话证据已经全部完成。
+个人字段保持 `XXX`。已收录四张带个人标题的[对话截图](ai-record/README.md)，其中一张经授权仅遮盖密码值，保留用户名及消息其他内容，原图仅留本地；同时保留文字节选和事后摘要。截图未覆盖全部故障诊断与探针设计轮次。历史回复中的 EXT4 口误、旧版报告页数均已在索引说明。
 
 ## 文件范围
 
@@ -25,14 +25,14 @@
 AGENTS.md                         后续 Agent 的工作约定
 README.md                         范围、复现入口、结果和限制
 extra-design/                     探针 C 源码、Makefile、安装脚本、加载配置
-tests/                            九项检查与启动性能采集脚本
+tests/                            历史九项检查、补充接口检查及性能采集脚本
 report/main.tex                   报告源文件
 report/scripts/                   原实验执行、采集和截图辅助脚本
 report/logs/                      原始编译、安装、启动与测试日志及内核配置
 report/figures/                   六张实机截图和原始启动时序 SVG
 output/pdf/                       一份最终报告 PDF
 docs/                            测试矩阵、证据 SHA-256 清单
-ai-record/                       对话节选、摘要及截图补充清单
+ai-record/                       经审阅的对话截图、文字节选与证据索引
 ```
 
 未纳入 Linux 完整源码、虚拟磁盘、`.ko` 等编译产物、TeX 中间文件、调试版 PDF、教师实验指导书，以及凭据。日志和原始截图保留了实验主机名、虚拟机用户名和 NAT 私网地址，便于核对同一次实验。
@@ -81,6 +81,22 @@ bash tests/collect-boot-performance.sh "$run_dir"
 - 模块加载时间对应用户空间加载模块阶段，不是 `start_kernel()` 运行时间。单次启动耗时没有优化前后多轮对照，不声明性能提升。
 - 报告的启动流程图是源码支持的路径分析；未做 GRUB 实际跳转地址追踪或逐指令验证。
 
+## 补充检查（与历史九项测试分开）
+
+`tests/check_probe_contract.py` 使用 Python 3 标准库，检查字段完整性、内核/状态一致性、两次读取的时间关系、0444 权限、拒绝写打开，以及失败单元查询的退出状态。写打开检查不截断文件、不写入数据，使用普通用户执行；它不证明 root/并发/攻击场景安全性，也不证明自动加载。
+
+本机夹具自测：`python tests/check_probe_contract.py --self-test`，8 项通过，原始输出见 [自测日志](report/logs/contract-self-test-20261007.txt)。这是测试判定逻辑的自测，不是 VM 内核结果；权限、真实 procfs 和 systemd 的端到端检查尚待执行。
+
+在目标虚拟机、仓库根目录执行下列命令收集新结果：
+```bash
+run_dir="$(mktemp -d /tmp/oslab3-contract.XXXXXX)"
+set -o pipefail
+python3 tests/check_probe_contract.py 2>&1 | tee "$run_dir/contract.log"
+test_rc=${PIPESTATUS[0]}
+printf 'test_exit=%s\n' "$test_rc" | tee -a "$run_dir/contract.log"
+```
+不要安装/重载模块后把此结果称为“自动加载复验”；复验自动加载仍需独立记录重启过程。
+
 ## 编译报告
 
 安装含中文支持的 TeX Live、XeLaTeX、Fandol 和 TeX Gyre 字体后，从仓库根目录运行：
@@ -95,6 +111,6 @@ xelatex -interaction=nonstopmode -halt-on-error main.tex
 
 ## Agent 协作与后续提交
 
-Agent 完成源码分析、代码和测试脚本编写、虚拟机命令执行、日志收集及报告排版；用户确定范围、批准变更、观察重启界面并登录桌面。对话记录区分原文节选、事后摘要和待补截图，不据此宣称学生已经独立掌握全部实现。
+Agent 完成源码分析、代码和测试脚本编写、虚拟机命令执行、日志收集及报告排版；用户确定范围、批准变更、观察重启界面并登录桌面。对话记录区分真实截图、原文节选、事后摘要及未覆盖环节，不据此宣称学生已经独立掌握全部实现。
 
-后续补充带姓名/学号标题的对话截图，并由本人检查报告的理解问题、确认能解释实现和测试边界。建议现场说明：Btrfs 模块如何由 initramfs 加载、systemd 挂载失败为何不等于内核未启动、各服务耗时为何不能简单相加。[AGENTS.md](AGENTS.md) 规定后续编辑与证据维护方式；[SHA-256 清单](docs/evidence-sha256.txt) 可用于校验本次归档工件。首次提交只记录本次整理，不追溯伪造实验时的 Git 历史。
+已有个人标题截图；仍建议补充探针设计和故障诊断的关键轮次。报告已补四个原理问答，由 Agent 协助整理，应由本人确认能解释实现和测试边界。建议现场说明：Btrfs 模块如何由 initramfs 加载、systemd 挂载失败为何不等于内核未启动、各服务耗时为何不能简单相加。[AGENTS.md](AGENTS.md) 规定后续编辑与证据维护方式；[SHA-256 清单](docs/evidence-sha256.txt) 可用于校验本次归档工件。首次提交只记录本次整理，不追溯伪造实验时的 Git 历史。
