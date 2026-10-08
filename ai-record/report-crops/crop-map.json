@@ -1,0 +1,119 @@
+[
+  {
+    "source": "ai-record/询问实验难度.png",
+    "source_sha256": "17df4df70b6ccea9ab4c0441a9d8ca0185fcca871b0e179f369371e18cc2ae35",
+    "crop": "ai-record/report-crops/selection-01.png",
+    "box_xyxy": [
+      0,
+      0,
+      1454,
+      1519
+    ],
+    "part": 1,
+    "parts": 1
+  },
+  {
+    "source": "ai-record/检查配置以及书写方案_已脱敏.png",
+    "source_sha256": "b7436f425dd14856fc552a81f4611ba07c657ef40fe03ec1c3e2fb67ebe5d2b0",
+    "crop": "ai-record/report-crops/plan-01.png",
+    "box_xyxy": [
+      0,
+      0,
+      1522,
+      1803
+    ],
+    "part": 1,
+    "parts": 4
+  },
+  {
+    "source": "ai-record/检查配置以及书写方案_已脱敏.png",
+    "source_sha256": "b7436f425dd14856fc552a81f4611ba07c657ef40fe03ec1c3e2fb67ebe5d2b0",
+    "crop": "ai-record/report-crops/plan-02.png",
+    "box_xyxy": [
+      0,
+      1803,
+      1522,
+      3602
+    ],
+    "part": 2,
+    "parts": 4
+  },
+  {
+    "source": "ai-record/检查配置以及书写方案_已脱敏.png",
+    "source_sha256": "b7436f425dd14856fc552a81f4611ba07c657ef40fe03ec1c3e2fb67ebe5d2b0",
+    "crop": "ai-record/report-crops/plan-03.png",
+    "box_xyxy": [
+      0,
+      3602,
+      1522,
+      5421
+    ],
+    "part": 3,
+    "parts": 4
+  },
+  {
+    "source": "ai-record/检查配置以及书写方案_已脱敏.png",
+    "source_sha256": "b7436f425dd14856fc552a81f4611ba07c657ef40fe03ec1c3e2fb67ebe5d2b0",
+    "crop": "ai-record/report-crops/plan-04.png",
+    "box_xyxy": [
+      0,
+      5421,
+      1522,
+      7219
+    ],
+    "part": 4,
+    "parts": 4
+  },
+  {
+    "source": "ai-record/执行.png",
+    "source_sha256": "47d8db3fbb7b0de62ef87a39d91abbbef37ca37c9719bf70b214b1408bb4fba3",
+    "crop": "ai-record/report-crops/execution-01.png",
+    "box_xyxy": [
+      0,
+      0,
+      1466,
+      1448
+    ],
+    "part": 1,
+    "parts": 3
+  },
+  {
+    "source": "ai-record/执行.png",
+    "source_sha256": "47d8db3fbb7b0de62ef87a39d91abbbef37ca37c9719bf70b214b1408bb4fba3",
+    "crop": "ai-record/report-crops/execution-02.png",
+    "box_xyxy": [
+      0,
+      1448,
+      1466,
+      2897
+    ],
+    "part": 2,
+    "parts": 3
+  },
+  {
+    "source": "ai-record/执行.png",
+    "source_sha256": "47d8db3fbb7b0de62ef87a39d91abbbef37ca37c9719bf70b214b1408bb4fba3",
+    "crop": "ai-record/report-crops/execution-03.png",
+    "box_xyxy": [
+      0,
+      2897,
+      1466,
+      4345
+    ],
+    "part": 3,
+    "parts": 3
+  },
+  {
+    "source": "ai-record/完成.png",
+    "source_sha256": "241f93f8ee9e2229f1a5b51ed4a3a8af98421d3899979784f23550950fd4d90c",
+    "crop": "ai-record/report-crops/completion-01.png",
+    "box_xyxy": [
+      0,
+      0,
+      1422,
+      1003
+    ],
+    "part": 1,
+    "parts": 1
+  }
+]

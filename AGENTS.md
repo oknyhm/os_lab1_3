@@ -35,6 +35,8 @@ This repository contains OS experiment 3, Linux boot initialization analysis, de
 
 # Git and publication
 
+- Use the user's inherited Git identity (Mao_HY); do not override it with the GitHub account name. Number documentation commits as `docs:"文档完善n"`, continuing the three prior unnumbered documentation commits with n=4. Check history before choosing the next number.
+
 - The user authorized a public GitHub repository named `os_lab1_3`. Limit uploads to the established report/source/tests/evidence/documentation files.
 - Do not upload full Linux sources, VM disk images, binaries, teacher-provided PDFs, private authentication material, or unrelated data. Inspect the explicit staged file list before committing.
 - Do not fabricate earlier commits, dates or student contributions. Never force-push, rewrite user history, or delete remote branches without a separate request.

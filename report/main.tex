@@ -689,13 +689,30 @@ Windows 侧 Agent 通过免密 SSH 在实验虚拟机中执行可复现命令，
 
 执行图中的 EXT4 描述是 Agent 口误，实际根文件系统以日志中的 Btrfs 为准；
 完成图中的 23 页对应当时版本，不是后续修订版。封面已填写姓名与学号；历史截图、日志及内核版本中的 XXX 标识按原样保留。
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.96\textwidth]{../ai-record/完成.png}
-\caption{个人标题对话截图：基础实验完成反馈（历史版本）}
-\end{figure}
-其余长截图保留原始分辨率供在仓库放大查阅，不缩成难以辨认的整页插图。
+以下将四张来源截图按原始顺序分为九幅单页插图，其中方案长图分为四段，执行长图分为三段。
+各分段保留原始像素，未缩采样、重绘或增添对话；裁切边界优先选择行间空白，连续覆盖来源图片，
+不把分段数量视为新增证据数量。方案图仅使用已脱敏副本。
+裁切坐标与来源哈希见 \path{ai-record/report-crops/crop-map.json}，
+脚本可验证分段拼回后与来源图片像素一致。原始截图仍在仓库保留，可放大核对。
 当前公开仓库：\url{https://github.com/oknyhm/os_lab1_3}。仓库名称按用户要求设定，内容仅涵盖实验三。
+\newcommand{\dialoguepage}[2]{%
+  \clearpage
+  \begin{figure}[p]
+    \centering
+    \includegraphics[width=\textwidth,height=0.88\textheight,keepaspectratio]{../ai-record/report-crops/#1}
+    \caption{#2}
+  \end{figure}
+  \clearpage
+}
+\dialoguepage{selection-01.png}{原始对话分段：选题讨论（1/1；仅讨论，不代表实现其他实验）}
+\dialoguepage{plan-01.png}{原始对话分段：环境检查与书写方案（1/4；密码已脱敏）}
+\dialoguepage{plan-02.png}{原始对话分段：环境检查与书写方案（2/4；计划不等于实现）}
+\dialoguepage{plan-03.png}{原始对话分段：环境检查与书写方案（3/4；计划不等于实现）}
+\dialoguepage{plan-04.png}{原始对话分段：环境检查与书写方案（4/4；计划不等于实现）}
+\dialoguepage{execution-01.png}{原始对话分段：执行过程（1/3；EXT4 口误以实际 Btrfs 日志为准）}
+\dialoguepage{execution-02.png}{原始对话分段：执行过程（2/3；EXT4 口误以实际 Btrfs 日志为准）}
+\dialoguepage{execution-03.png}{原始对话分段：执行过程（3/3；启动异常与处理反馈）}
+\dialoguepage{completion-01.png}{原始对话分段：基础实验完成反馈（1/1；23 页为历史报告版本）}
 
 \chapter{疑难解惑、经验与结论}
 

@@ -1,13 +1,23 @@
-# Evidence integrity manifest updated 2026-10-07.
+# Evidence integrity manifest updated 2026-10-08.
 # Historical VM runs: 2026-09-21. Live VM retest and separate fixture self-test: 2026-10-07.
-# Includes four reviewed dialogue screenshots, one explicitly pixel-redacted.
+# Includes four source dialogue screenshots (one redacted), nine lossless crops and their mapping.
 # Integrity checks do not establish authenticity or constitute a digital signature.
 # Paths relative to repository root: sha256sum --strict -c docs/evidence-sha256.txt
+144e9a236857c74844b280fa70ac65687a567eb8842524b5c08430f24e82596e  ai-record/report-crops/completion-01.png
+c38d475d7a68e5c4c43ef4672dbeb1223751110d777a74ca7eaae5565bb2b27b  ai-record/report-crops/crop-map.json
+104166fc48188b81ff00d21dd6a8f7fed172f677b97adcf3ae4d80cf2b3098ff  ai-record/report-crops/execution-01.png
+e68e6a1fc3a5498ebd8b318accd6ccdf31555affb52ed1fe7a77ed321e651f2b  ai-record/report-crops/execution-02.png
+40d13722fb68f63c1a594e52310b8099cb21b0dbf9989d0d442943774600da8b  ai-record/report-crops/execution-03.png
+b6867f6de9d39c4e45d0ef180a4826f0555cb39d0275958414e1ddf311f2b6c3  ai-record/report-crops/plan-01.png
+b39bc690421acc96776c1400cf26540b4cbcf88814296eab65839ed8bb8bff95  ai-record/report-crops/plan-02.png
+1816eea805350648e10d2fd3034023b5b0accac7c50bb7578f362d2201df29ce  ai-record/report-crops/plan-03.png
+81aecb83c613f829f4a7d1249a596020dfebe88c5e8e4dbb5af5e3300cfdf1e8  ai-record/report-crops/plan-04.png
+d6ee2b61962dee65f5c9c7ffb8ab4e8a0f989108347a5c091329e071400677bd  ai-record/report-crops/selection-01.png
 b7436f425dd14856fc552a81f4611ba07c657ef40fe03ec1c3e2fb67ebe5d2b0  ai-record/检查配置以及书写方案_已脱敏.png
 241f93f8ee9e2229f1a5b51ed4a3a8af98421d3899979784f23550950fd4d90c  ai-record/完成.png
 17df4df70b6ccea9ab4c0441a9d8ca0185fcca871b0e179f369371e18cc2ae35  ai-record/询问实验难度.png
 47d8db3fbb7b0de62ef87a39d91abbbef37ca37c9719bf70b214b1408bb4fba3  ai-record/执行.png
-547ca9fd382be98751629b5717e99120c703935800f44b5d4728bf2bae1d4399  output/pdf/实验三_Linux启动初始化过程探析_XXX.pdf
+3a08d8c9c9649b99464e515ba23b2b516832dbdcc8ada1a837ab2254ee326453  output/pdf/实验三_Linux启动初始化过程探析_XXX.pdf
 5b2f30624bb4a444d5ae2c2d0558baa0f175ea83d84bf464804f8262711eec3d  report/figures/boot-analysis.svg
 82b9ba5cc1e0fe1a4fd307e3d96ee0b459f9982e7517e26667f7ba39758df2c1  report/figures/boot-verify.png
 11735c2153fffbf5bf98fe1f0a2307d3c0b89795723dab531436a2d9f18cd6b4  report/figures/build-result.png
